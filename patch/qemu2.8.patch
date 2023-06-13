@@ -1,0 +1,36 @@
+diff -urN ./qemu-2.8.0/disas/arm-a64.cc ./qemu-2.8.0-patch/disas/arm-a64.cc
+--- ./qemu-2.8.0/disas/arm-a64.cc	2016-12-20 15:16:44.000000000 -0500
++++ ./qemu-2.8.0-patch/disas/arm-a64.cc	2023-06-13 02:37:19.425496516 -0400
+@@ -17,8 +17,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
+-extern "C" {
+ #include "qemu/osdep.h"
++extern "C" {
+ #include "disas/bfd.h"
+ }
+ 
+diff -urN ./qemu-2.8.0/qga/commands-posix.c ./qemu-2.8.0-patch/qga/commands-posix.c
+--- ./qemu-2.8.0/qga/commands-posix.c	2016-12-20 15:16:49.000000000 -0500
++++ ./qemu-2.8.0-patch/qga/commands-posix.c	2023-06-13 02:39:21.572991312 -0400
+@@ -15,6 +15,7 @@
+ #include <sys/ioctl.h>
+ #include <sys/wait.h>
+ #include <dirent.h>
++#include <sys/sysmacros.h>
+ #include "qga/guest-agent-core.h"
+ #include "qga-qmp-commands.h"
+ #include "qapi/qmp/qerror.h"
+diff -urN ./qemu-2.8.0/util/memfd.c ./qemu-2.8.0-patch/util/memfd.c
+--- ./qemu-2.8.0/util/memfd.c	2016-12-20 15:16:54.000000000 -0500
++++ ./qemu-2.8.0-patch/util/memfd.c	2023-06-13 02:36:59.520780480 -0400
+@@ -37,7 +37,7 @@
+ #include <sys/syscall.h>
+ #include <asm/unistd.h>
+ 
+-static int memfd_create(const char *name, unsigned int flags)
++int memfd_create(const char *name, unsigned int flags)
+ {
+ #ifdef __NR_memfd_create
+     return syscall(__NR_memfd_create, name, flags);

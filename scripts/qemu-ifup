@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo "Executing /etc/qemu-ifup"
+echo "Bringing up $1 for bridged mode..."
+ip link set $1 up promisc on
+echo "Adding $1 to br0..."
+brctl addif br0 $1
+ip link set tap0 up
+brctl show
+
