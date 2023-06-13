@@ -46,9 +46,9 @@ mkdir -p build dl images rootfs tools
 function build_busybox()
 {
 	echo "make buxybox"
-	make defconfig
+	make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-	defconfig
 	make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-	 -j5
-	make install -j5
+	make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-	 install
 }
 
 function build_linux()
@@ -91,17 +91,22 @@ function build_uboot()
 function install_tools()
 {
 	apt install -y gcc-arm-linux-gnueabi axel  \
-		python2 xinetd tftpd-hpa nfs-kernel-server rpcbind
+		python2 xinetd tftpd-hpa nfs-kernel-server rpcbind \
+		bison flex \
+		libgmp-dev \
+		pkg-config \
+		zlib1g-dev \
+		libglib2.0-dev  autoconf automake libtool bridge-utils tftpd-hpa
 
 set +e
 	showmount -e | grep "$topdir/rootfs"
-set -e
 	if [ $? -eq 1 ]; then
 		echo "$topdir/rootfs *(rw,sync,no_root_squash,no_subtree_check)" >> /etc/exports
 	fi
+set -e
 	exportfs -r
 
-	cat > /etc/xinetd.d/tftpd << EOF
+	cat > /etc/xinetd.d/tftp << EOF
 service tftp
 {
   disable = no
@@ -118,13 +123,14 @@ service tftp
 EOF
 
 	cat > /etc/default/tftpd-hpa << EOF
-# /etc/default/tftpd-hpa
 TFTP_USERNAME="tftp"
-RUN_DAEMON="no"
-TFTP_OPTIONS="-s /root/my/image -c -p -U tftpd"
+TFTP_DIRECTORY="${imagedir}"
+TFTP_ADDRESS=":69"
+TFTP_OPTIONS="-l -c -s"
 EOF
 
 	/etc/init.d/xinetd restart
+	service tftpd-hpa restart
 }
 
 function build_gdb()
