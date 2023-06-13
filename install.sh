@@ -55,7 +55,7 @@ function build_linux()
 {
 	echo "make linux"
 	make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- vexpress_defconfig
-	make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-	-j5 uImage LOADADDR=0x60003000
+	bear -- make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-	-j5 uImage LOADADDR=0x60003000
 	make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- dtbs
 	cp arch/arm/boot/uImage ${imagedir}/
 	cp arch/arm/boot/dts/vexpress-v2p-ca9.dtb ${imagedir}/
