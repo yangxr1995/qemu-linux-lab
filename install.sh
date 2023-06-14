@@ -155,9 +155,12 @@ function build_rootfs()
 	if [ ! -d  ${busybox_install} ]; then
 		build busybox
 	fi
+
+	cd ${rootfsdir}
 	cp ${busybox_install}/_install/* ./ -rfd
+	cp /usr/arm-linux-gnueabi/lib ./ -rfd
+
 	mkdir -p sys proc dev lib etc etc/init.d
-	cp /usr/arm-linux-gnueabi/lib/* ./lib/ -rfd
 
 	cat > ${rootfsdir}/etc/fstab << EOF
 proc           /proc      proc    defaults   0     0
@@ -194,13 +197,4 @@ EOF
 
 	chmod +x ${rootfsdir}/etc/init.d/rcS
 }
-
-#install_tools
-#build busybox
-#build uboot 
-build linux
-#build_rootfs
-
-# build gdb
-# build qemu
 

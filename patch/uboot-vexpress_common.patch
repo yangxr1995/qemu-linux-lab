@@ -13,7 +13,7 @@
 +    "tftp 0x60003000 uImage; tftp 0x60703000 vexpress-v2p-ca9.dtb; \
 +    setenv bootargs 'root=/dev/nfs rw \
 +    nfsroot=192.168.3.2:/root/qemu-linux-lab/rootfs,vers=3,tcp,rsize=4096,wsize=4096 \
-+    ip=192.168.3.10:192.168.3.2:192.168.3.1:255.255.255.0::eth0:off \
++    ip=192.168.3.10 \
 +    init=/linuxrc console=ttyAMA0'; \
 +    bootm 0x60003000 - 0x60703000;"
 +#endif
