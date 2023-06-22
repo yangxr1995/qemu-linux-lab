@@ -92,11 +92,9 @@ function install_tools()
 {
 	apt install -y gcc-arm-linux-gnueabi axel  \
 		python2 xinetd tftpd-hpa nfs-kernel-server rpcbind \
-		bison flex \
-		libgmp-dev \
-		pkg-config \
-		zlib1g-dev \
-		libglib2.0-dev  autoconf automake libtool bridge-utils tftpd-hpa
+		bison flex libgmp-dev pkg-config zlib1g-dev  \
+		libglib2.0-dev  autoconf automake  libtool  \
+		bridge-utils tftpd-hpa libexpat1 libexpat1-dev texinfo
 
 set +e
 	showmount -e | grep "$topdir/rootfs"
@@ -135,7 +133,7 @@ EOF
 
 function build_gdb()
 {
-	./configure --prefix=${toolsdir}/gdb-arm --target=arm-linux	
+	./configure --prefix=${toolsdir}/gdb-arm --target=arm-linux	 --with-expat
 	make -j5
 	make install
 }
