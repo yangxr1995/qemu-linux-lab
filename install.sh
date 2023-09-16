@@ -54,6 +54,7 @@ function build_busybox()
 function build_linux()
 {
 	echo "make linux"
+	patch -p1 < ${patchdir}/linux-O0.path
 	make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- vexpress_defconfig
 	bear -- make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-	-j5 uImage LOADADDR=0x60003000
 	make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- dtbs
@@ -194,12 +195,12 @@ EOF
 	chmod +x ${rootfsdir}/etc/init.d/rcS
 }
 
-install_tools
-build busybox
-build uboot 
+#install_tools
+#build busybox
+#build uboot 
 build linux
-build_rootfs
+#build_rootfs
 
-build gdb
-build qemu
+# build gdb
+# build qemu
 
