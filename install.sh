@@ -42,9 +42,9 @@ declare -A cur_arr
 cur_arr["linux"]="https://cdn.kernel.org/pub/linux/kernel/v5.x/${linux_tar}"
 cur_arr["busybox"]="https://busybox.net/downloads/${busybox_tar}"
 cur_arr["uboot"]="https://ftp.denx.de/pub/u-boot/${uboot_tar}"
-#cur_arr["gdb"]="https://ftp.gnu.org/gnu/gdb/${gdb_tar}"
-cur_arr["gdb"]="http://45.12.110.218:8080/${gdb_tar}"
-cur_arr["qemu"]="https://download.qemu.org/${qemu_tar}"
+cur_arr["gdb"]="https://ftp.gnu.org/gnu/gdb/${gdb_tar}"
+#cur_arr["qemu"]="https://download.qemu.org/${qemu_tar}"
+cur_arr["qemu"]="http://141.11.93.27:8080/${qemu_tar}"
 cur_arr["iptables"]="https://www.netfilter.org/pub/iptables/${iptables_tar}"
 
 mkdir -p build dl images rootfs tools
@@ -67,6 +67,7 @@ function build_busybox()
 function build_linux()
 {
 	echo "make linux"
+	patch -p0 < ${patchdir}/linux-defconfig.patch
 	make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- vexpress_defconfig
 	bear -- make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-	-j5 uImage LOADADDR=0x60003000
 	make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- dtbs
@@ -220,10 +221,9 @@ EOF
 #install_tools
 #build busybox
 #build uboot 
-#build linux
+build linux
 #build_rootfs
 #build iptables
-
 #build gdb
 #build qemu
 
