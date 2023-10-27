@@ -11,7 +11,7 @@ builddir=${topdir}/build
 busybox_src="busybox-1.32.0"
 linux_src="linux-5.10.183"
 uboot_src="u-boot-2020.10"
-gdb_src="gdb-13.2"
+gdb_src="gdb-10.2"
 qemu_src="qemu-2.8.0"
 iptables_src="iptables-1.8.9"
 
@@ -115,7 +115,8 @@ function install_tools()
 		libgmp-dev \
 		pkg-config \
 		zlib1g-dev \
-		libglib2.0-dev  autoconf automake libtool bridge-utils tftpd-hpa
+		libglib2.0-dev  autoconf automake libtool bridge-utils tftpd-hpa \
+		qemu-system-arm
 
 set +e
 	showmount -e | grep "$topdir/rootfs"
@@ -218,12 +219,11 @@ EOF
 	chmod +x ${rootfsdir}/etc/init.d/rcS
 }
 
-#install_tools
-#build busybox
-#build uboot 
+install_tools
+build busybox
+build uboot 
 build linux
-#build_rootfs
-#build iptables
-#build gdb
-#build qemu
+build_rootfs
+build iptables
+build gdb
 
